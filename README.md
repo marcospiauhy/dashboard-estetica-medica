@@ -8,7 +8,6 @@ Tudo roda em **um único arquivo HTML**: sem servidor, sem instalação, funcion
 ## Como usar
 
 - **Abrir localmente:** baixe o `index.html` e dê dois cliques.
-- **Online:** publicado via GitHub Pages (veja [Publicar no GitHub Pages](#publicar-no-github-pages)).
 - **Atualizar os dados:** clique em **Carregar planilha** e escolha uma nova versão do `.xlsx`. O navegador lembra da última planilha carregada; **Dados originais** volta para a versão embutida.
 
 ## O que tem no dashboard
@@ -68,11 +67,6 @@ python3 scripts/build.py outra_planilha.xlsx saida.html   # opcional: outra plan
 
 O build embute no HTML o Chart.js, o fflate (descompactação do .xlsx) e a planilha em base64.
 
-## Publicar no GitHub Pages
-
-1. No repositório: **Settings → Pages**.
-2. Em *Source*, escolha **Deploy from a branch**, branch `main`, pasta `/ (root)`.
-3. Em ~1 minuto o dashboard fica em `https://<seu-usuario>.github.io/<nome-do-repo>/`.
 
 ## Fontes e ressalvas
 
