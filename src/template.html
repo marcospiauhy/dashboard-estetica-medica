@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — Indústria de Estética Médica (2015–2025)</title>
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface-2:#f3f2ee;
+  --text-1:#0b0b0b; --text-2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --s1-wash:rgba(42,120,214,.10);
+  --good:#006300; --bad:#d03b3b; --warn-bg:#fff6dc; --warn-ink:#6b4a00;
+  --neutral-cell:#ebeae5; --accent:#2a78d6;
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface-2:#232321;
+  --text-1:#f0efec; --text-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+  --s1-wash:rgba(57,135,229,.12);
+  --good:#0ca30c; --bad:#e66767; --warn-bg:#2e2510; --warn-ink:#f2cf7a;
+  --neutral-cell:#2a2a28; --accent:#3987e5;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--text-1);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:14px;line-height:1.45}
+button,select,input{font:inherit;color:inherit}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--border)}
+.top-row{display:flex;align-items:center;gap:16px;padding:12px 24px;flex-wrap:wrap}
+.brand h1{font-size:18px;margin:0;font-weight:650}
+.brand .sub{color:var(--text-2);font-size:12.5px}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.small{padding:3px 8px;font-size:12px;border-radius:6px}
+.src-status{font-size:12px;color:var(--text-2);max-width:340px}
+nav.tabs{display:flex;gap:2px;padding:0 20px;overflow-x:auto}
+nav.tabs button{border:0;background:none;padding:10px 12px;cursor:pointer;color:var(--text-2);border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--text-1);border-bottom-color:var(--accent);font-weight:600}
+.filters{display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:10px 24px;border-top:1px solid var(--border);background:var(--surface)}
+.fgroup{display:flex;align-items:center;gap:6px;transition:opacity .15s}
+.fgroup.inactive{opacity:.38}
+.fgroup > label.fl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
+select{border:1px solid var(--border);background:var(--surface);border-radius:6px;padding:4px 6px}
+.chip{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:3px 10px;cursor:pointer;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--s1-wash);border-color:var(--accent);font-weight:600}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:4px 10px;cursor:pointer;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--s1-wash);font-weight:600}
+main{padding:20px 24px 60px;max-width:1500px;margin:0 auto}
+.page-filters{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:0 0 16px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+.page-filters .ttl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-2{grid-column:span 2}
+@media (max-width:1100px){.span-8,.span-6,.span-4{grid-column:span 12}.span-3,.span-2{grid-column:span 6}}
+@media (max-width:640px){header.top{position:static}.span-3,.span-2{grid-column:span 12}.top-row,.filters,main{padding-left:12px;padding-right:12px}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;min-width:0}
+.card-h{display:flex;gap:8px;align-items:flex-start}
+.card-h h3{margin:0;font-size:14.5px;font-weight:620}
+.card-h .q{color:var(--text-2);font-size:12.5px;margin-top:2px}
+.card-h .tools{margin-left:auto;display:flex;gap:6px;flex-shrink:0}
+.chart-wrap{position:relative;height:290px;margin-top:10px}
+.chart-wrap.tall{height:360px}.chart-wrap.short{height:220px}.chart-wrap.xs{height:180px}
+.card .note{font-size:12px;color:var(--text-2);margin-top:8px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--text-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px}
+.legend i.box{width:10px;height:10px;border-radius:2px}
+.legend i.hollow{width:9px;height:9px;border-radius:50%;border:2px solid var(--text-2);background:transparent}
+.legend i.fill{width:9px;height:9px;border-radius:50%;background:var(--text-2)}
+.kpi{display:flex;flex-direction:column;gap:4px}
+.kpi .lbl{font-size:12.5px;color:var(--text-2)}
+.kpi .val{font-size:26px;font-weight:650;letter-spacing:-.01em}
+.kpi .val.hero{font-size:48px;line-height:1.05}
+.kpi .delta{font-size:12.5px;color:var(--text-2)}
+.kpi .delta.up{color:var(--good)}.kpi .delta.down{color:var(--bad)}
+.kpi .flag{font-size:11.5px;color:var(--warn-ink);background:var(--warn-bg);border-radius:4px;padding:1px 6px;align-self:flex-start}
+.alert{background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:12px 14px;font-size:13px;display:flex;gap:10px}
+.alert b{color:inherit}
+.insights{margin:6px 0 0;padding-left:18px}
+.insights li{margin:6px 0}
+table.data{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+table.data th,table.data td{padding:6px 8px;border-bottom:1px solid var(--grid);text-align:left;vertical-align:top}
+table.data th{color:var(--text-2);font-weight:600;position:sticky;top:0;background:var(--surface)}
+table.data td.num,table.data th.num{text-align:right;font-variant-numeric:tabular-nums}
+.table-scroll{max-height:420px;overflow:auto;margin-top:6px}
+.table-view{max-height:290px;overflow:auto}
+.tag{display:inline-block;font-size:11px;border-radius:4px;padding:0 5px;background:var(--surface-2);color:var(--text-2)}
+.tag.d{background:var(--warn-bg);color:var(--warn-ink)}
+.heat{display:grid;gap:2px;margin-top:12px;font-size:12px;overflow-x:auto}
+.heat .hcell{height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px}
+.heat .hrow{white-space:nowrap;padding-right:8px;display:flex;align-items:center;color:var(--text-2)}
+.heat .hhead{text-align:center;color:var(--muted);font-variant-numeric:tabular-nums}
+.hcell.r{background:var(--s1);color:#fff}.hcell.d{background:var(--s4);color:#0b0b0b}.hcell.n{background:var(--neutral-cell);color:var(--muted)}
+#tooltip-html{position:fixed;pointer-events:none;z-index:50;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;box-shadow:0 4px 16px rgba(0,0,0,.12);display:none}
+.toast{position:fixed;right:20px;bottom:20px;z-index:60;background:var(--text-1);color:var(--page);padding:10px 14px;border-radius:10px;max-width:420px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;white-space:pre-line}
+.range-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.range-row input[type=range]{flex:1;min-width:160px}
+.fx input{width:80px;border:1px solid var(--border);border-radius:6px;padding:3px 6px;background:var(--surface)}
+.empty{color:var(--muted);font-size:13px;padding:30px 0;text-align:center}
+.search{border:1px solid var(--border);border-radius:6px;padding:5px 8px;background:var(--surface);width:260px}
+.section-title{grid-column:span 12;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 0 -6px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:20px}
+@media print{header.top{position:static}.tools,.top-actions{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <div class="brand">
+      <h1>Indústria de Estética Médica — 2015 a 2025</h1>
+      <div class="sub">Procedimentos (ISAPS), mercado, empresas e Brasil × EUA × Mundo</div>
+    </div>
+    <div class="top-actions">
+      <span class="src-status" id="srcStatus"></span>
+      <input type="file" id="fileInput" accept=".xlsx,.xlsm" hidden>
+      <button class="btn primary" id="btnLoad" title="Carregar uma versão atualizada da planilha (.xlsx)">⤒ Carregar planilha</button>
+      <button class="btn" id="btnReset" title="Voltar aos dados embutidos no arquivo">↺ Dados originais</button>
+      <button class="btn" id="btnTheme" title="Alternar tema claro/escuro">◐ Tema</button>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+  <div class="filters" id="globalFilters"></div>
+</header>
+<main id="main"></main>
+<footer>Dados: planilha “banco_dados_estetica_medica.xlsx”. Círculo vazado = valor derivado/estimado (fundo amarelo na planilha). Use “Tabela” em cada gráfico para ver os números.</footer>
+<div id="tooltip-html"></div>
+<div class="toast" id="toast"></div>
+
+<script>/* Chart.js (MIT) */
+{{CHARTJS}}
+</script>
+<script>/* fflate (MIT) */
+{{FFLATE}}
+</script>
+<script>
+window.EMBEDDED_XLSX_B64 = "{{XLSX_B64}}";
+</script>
+<script>
+{{APP}}
+</script>
+</body>
+</html>

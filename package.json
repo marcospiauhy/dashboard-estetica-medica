@@ -1,0 +1,8 @@
+{
+  "name": "dashboard-estetica-medica",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dashboard interativo da indústria de estética médica (2015–2025) em um único arquivo HTML",
+  "scripts": { "build": "python3 scripts/build.py" },
+  "dependencies": { "chart.js": "4.6.1", "fflate": "0.8.3" }
+}
